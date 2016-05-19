@@ -107,8 +107,8 @@ class Game(pyglet.window.Window):
                           group = background))
         self.floor = Floor(batch = self.batch_draw, space = self.space)
         static_lines = [pymunk.Segment(self.space.static_body, Vec2d(0, constants.F_HEIGHT),
-                                                               Vec2d(constants.W_WIDTH/2, constants.F_HEIGHT + 80), 1.0),
-                        pymunk.Segment(self.space.static_body, Vec2d(constants.W_WIDTH/2, constants.F_HEIGHT + 80),
+                                                               Vec2d(constants.W_WIDTH/2, constants.F_HEIGHT + 110), 1.0),
+                        pymunk.Segment(self.space.static_body, Vec2d(constants.W_WIDTH/2, constants.F_HEIGHT + 110),
                                                                 Vec2d(constants.W_WIDTH, constants.F_HEIGHT), 1.0)
                     ]
         self.space.add(static_lines)
@@ -160,7 +160,7 @@ class Game(pyglet.window.Window):
         glBegin(GL_TRIANGLES)
         glVertex2d(0,constants.F_HEIGHT - 5)
         glVertex2d(constants.W_WIDTH,constants.F_HEIGHT - 5)
-        glVertex2d(constants.W_WIDTH/2, constants.F_HEIGHT + 80 - 5)
+        glVertex2d(constants.W_WIDTH/2, constants.F_HEIGHT + 110 - 5)
         glEnd()
 
 
