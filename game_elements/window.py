@@ -86,7 +86,7 @@ class Game(pyglet.window.Window):
             self.learner = Opponent.Learner(self, load)
         self.current_iteration = 0
 
-        if run_pyglet and self.mode == "single":
+        if not(run_pyglet):
             filename =  datetime.datetime.fromtimestamp(time.time()).strftime('%Y%m%d%H%M%S')
             print "Gerando arquivo para listagem das performances (%s.txt)" % filename
             self.performances_file = open(("./performance/%s.txt" % filename), "w+")
@@ -181,7 +181,7 @@ class Game(pyglet.window.Window):
             self.lone_wheel.randomize(self.randomizer, new = False)
         self.smiley.randomize(self.randomizer, new = False)
         self.smiley.apply_impulse(self.randomizer, new = True)
-        if self.run_pyglet and self.mode == "single":
+        if not(self.run_pyglet):
             self.performances_file.write(str(performance) + "\n")
         self.epoch += 1
         self.current_iteration = 0
