@@ -7,6 +7,10 @@ import random
 import datetime, time
 import operator
 
+def normalize(value, oldmin, oldmax, newmin, newmax):
+    newvalue = (((float(value) - oldmin) * (newmax - newmin)) / (oldmax - oldmin)) + newmin
+    return newvalue
+
 class Controller:
     def __init__(self, game, load, state):
         self.initialize_parameters(game, load, state)
@@ -20,6 +24,7 @@ class Controller:
         self.next_parents = []
         self.keys = []
         self.parents_keys = []
+        #self.maxvely = 0
 
     def initialize_parameters(self, game, load,state):
         self.state = state
@@ -47,7 +52,7 @@ class Controller:
         self.state = state
         features = self.compute_features()
         parameters = self.parameters
-		NFEATURES = 3*len(self.compute_features())
+	NFEATURES = len(self.compute_features())
         parameters_e = parameters[0:NFEATURES]
         parameters_n = parameters[NFEATURES:NFEATURES*2]
         parameters_d = parameters[NFEATURES*2:NFEATURES*3]
@@ -65,6 +70,12 @@ class Controller:
         else: #melhor = ficar parado
             return 0
 
+##        if self.state.angular_velocity < self.maxvely:
+##            self.maxvely = self.state.angular_velocity
+##            print "Maior Velocidade Angular: " + str(self.state.angular_velocity)
+##            
+##        return 1 #sempre retornar direita (para ver limite de velocidade)
+
     #FUNCAO A SER COMPLETADA. Deve calcular features expandidas do estados (Dica: deve retornar um vetor)
     def compute_features(self):
         features = []
@@ -77,14 +88,22 @@ class Controller:
         vel_x = self.state.velocity_x
         vel_y = self.state.velocity_y
 
-        features.append((x+600))
+        x = normalize(x,0,1200,-1,1)
+        vel = normalize(vel,-3600,3600,-1,1)     #empiricamente observado que vai de -3600 até 3600
+        ang = normalize(ang,-60,60,-1,1)         #empiricamente observado que vai de -60 até 60
+        wind = normalize(wind,-500,500,-1,1)
+        fric = normalize(fric,0.970,0.999,-1,1)
+        vel_x = normalize(vel_x,-1600,1600,-1,1) #empiricamente observado que vai de -1600 até 1600
+        vel_y = normalize(vel_y,-250,1200,-1,1)  #empiricamente observado que vai de -250 até 1200
+
+        features.append(x)
         features.append(vel)
         features.append(ang)
         features.append(wind)
         features.append(fric)
         features.append(vel_x)
         features.append(vel_y)
-        features.append(vel_x + (x+600))
+        features.append(vel_x + x)
 
         return features
 
